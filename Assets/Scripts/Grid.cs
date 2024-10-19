@@ -13,7 +13,7 @@ public class Grid : MonoBehaviour
     float nodeDiameter;
     int gridSizeX, gridSizeY, gridSizeZ;
 
-    void Start()
+    void Awake()
     {
         nodeDiameter = nodeRadius * 2;
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
@@ -21,6 +21,7 @@ public class Grid : MonoBehaviour
         gridSizeZ = Mathf.RoundToInt(gridWorldSize.z / nodeDiameter);
         CreateGrid();
     }
+
 
     void CreateGrid()
     {
@@ -106,7 +107,6 @@ public class Grid : MonoBehaviour
         return grid[x, y, z];
     }
 
-    // New MaxSize property
     public int MaxSize
     {
         get { return gridSizeX * gridSizeY * gridSizeZ; }
@@ -126,12 +126,43 @@ public class Grid : MonoBehaviour
                 Gizmos.color = (n.walkable) ? Color.white : Color.red;
 
                 if (playerNode == n)
-                    Gizmos.color = Color.green;  // Indicate player node.
+                    Gizmos.color = Color.green;
                 if (path != null && path.Contains(n))
-                    Gizmos.color = Color.blue;  // Indicate path nodes.
+                    Gizmos.color = Color.blue;
 
                 Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
             }
         }
     }
+
+    public Node GetRandomWalkableNode()
+    {
+        if (grid == null)
+        {
+            Debug.LogError("Grid is not initialized!");
+            return null;
+        }
+
+        Node randomNode = null;
+        int attempts = 0; // Counter to prevent infinite loops
+        int maxAttempts = 100; // Max attempts to find a walkable node
+
+        while ((randomNode == null || !randomNode.walkable) && attempts < maxAttempts)
+        {
+            int x = Random.Range(0, gridSizeX);
+            int y = Random.Range(0, gridSizeY);
+            int z = Random.Range(0, gridSizeZ);
+            randomNode = grid[x, y, z];
+            attempts++;
+        }
+
+        if (randomNode == null || !randomNode.walkable)
+        {
+            Debug.LogError("Could not find a walkable node after multiple attempts!");
+        }
+
+        return randomNode;
+    }
+
+
 }

@@ -4,27 +4,26 @@ using UnityEngine;
 
 public class PathFinding : MonoBehaviour
 {
-    Grid grid;
+    public Grid grid;
     public Transform seeker, target;
 
     private void Awake()
     {
-        grid = GetComponent<Grid>();
+        grid = GameObject.Find("Grid").GetComponent<Grid>();
     }
 
     private void Update()
     {
-        findPath(seeker.position, target.position);
-    }
+/*        findPath(seeker.position, target.position);
+*/    }
 
-    void findPath(Vector3 startPos, Vector3 targetPos)
+    public void findPath(Vector3 startPos, Vector3 targetPos)
     {
         Node startNode = grid.NodeFromWorldPoint(startPos);
         Node targetNode = grid.NodeFromWorldPoint(targetPos);
 
         if (!startNode.walkable || !targetNode.walkable)
         {
-            Debug.LogWarning("No valid path: Start or Target node is unwalkable.");
             return;
         }
 
@@ -76,6 +75,7 @@ public class PathFinding : MonoBehaviour
         path.Reverse();
         grid.path = path;
     }
+
 
     int GetDistance(Node nodeA, Node nodeB)
     {

@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1581173036929178769}
   - component: {fileID: 291589784231401035}
-  - component: {fileID: 4283499524600376756}
   m_Layer: 0
   m_Name: A_
   m_TagString: Untagged
@@ -49,19 +48,5 @@ MonoBehaviour:
   unwalkableMask:
     serializedVersion: 2
     m_Bits: 64
-  gridWorldSize: {x: 30, y: 30}
+  gridWorldSize: {x: 30, y: 30, z: 0}
   nodeRadius: 0.2
---- !u!114 &4283499524600376756
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 314484256816102842}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb3583f1eb1197f4b855e252aefe9a61, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  seeker: {fileID: 0}
-  target: {fileID: 0}
