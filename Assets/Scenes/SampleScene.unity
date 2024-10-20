@@ -4138,7 +4138,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.19593246, y: -0.000000014612341, z: -0.0000000029196214, w: 0.98061746}
+  m_LocalRotation: {x: -0.19593245, y: -0.000000029224681, z: -0.000000005839243, w: 0.98061746}
   m_LocalPosition: {x: 41, y: 27, z: 52}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -5580,7 +5580,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentState: 0
   player: {fileID: 1030319494}
-  sightRange: 4
+  sightRange: 10
   chaseDuration: 5
   movementSpeed: 5
 --- !u!114 &1654924923
@@ -6800,7 +6800,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3349290393652772887, guid: 787d0af1a433698458e1dc0840e0bdf3, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.08808901
+      value: -0.088089004
       objectReference: {fileID: 0}
     - target: {fileID: 3349290393652772887, guid: 787d0af1a433698458e1dc0840e0bdf3, type: 3}
       propertyPath: m_LocalRotation.y
@@ -6808,7 +6808,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3349290393652772887, guid: 787d0af1a433698458e1dc0840e0bdf3, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.17501386
+      value: -0.17501384
       objectReference: {fileID: 0}
     - target: {fileID: 3357030696655384645, guid: 787d0af1a433698458e1dc0840e0bdf3, type: 3}
       propertyPath: m_Name

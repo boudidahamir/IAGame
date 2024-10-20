@@ -12,10 +12,10 @@ public class PathFinding : MonoBehaviour
         grid = GameObject.Find("Grid").GetComponent<Grid>();
     }
 
-    private void Update()
+/*    private void Update()
     {
-/*        findPath(seeker.position, target.position);
-*/    }
+        findPath(seeker.position, target.position);
+    }*/
 
     public void findPath(Vector3 startPos, Vector3 targetPos)
     {

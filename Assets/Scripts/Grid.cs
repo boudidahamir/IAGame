@@ -13,6 +13,13 @@ public class Grid : MonoBehaviour
     float nodeDiameter;
     int gridSizeX, gridSizeY, gridSizeZ;
 
+    public int MaxSize
+    {
+        get { return gridSizeX * gridSizeY * gridSizeZ; }
+    }
+
+    public List<Node> path;
+
     void Awake()
     {
         nodeDiameter = nodeRadius * 2;
@@ -21,7 +28,6 @@ public class Grid : MonoBehaviour
         gridSizeZ = Mathf.RoundToInt(gridWorldSize.z / nodeDiameter);
         CreateGrid();
     }
-
 
     void CreateGrid()
     {
@@ -107,13 +113,6 @@ public class Grid : MonoBehaviour
         return grid[x, y, z];
     }
 
-    public int MaxSize
-    {
-        get { return gridSizeX * gridSizeY * gridSizeZ; }
-    }
-
-    public List<Node> path;
-
     void OnDrawGizmos()
     {
         Gizmos.DrawWireCube(transform.position, gridWorldSize);
@@ -143,25 +142,22 @@ public class Grid : MonoBehaviour
             return null;
         }
 
-        Node randomNode = null;
-        int attempts = 0; // Counter to prevent infinite loops
-        int maxAttempts = 100; // Max attempts to find a walkable node
-
-        while ((randomNode == null || !randomNode.walkable) && attempts < maxAttempts)
+        List<Node> walkableNodes = new List<Node>();
+        foreach (Node node in grid)
         {
-            int x = Random.Range(0, gridSizeX);
-            int y = Random.Range(0, gridSizeY);
-            int z = Random.Range(0, gridSizeZ);
-            randomNode = grid[x, y, z];
-            attempts++;
+            if (node.walkable)
+            {
+                walkableNodes.Add(node);
+            }
         }
 
-        if (randomNode == null || !randomNode.walkable)
+        if (walkableNodes.Count == 0)
         {
-            Debug.LogError("Could not find a walkable node after multiple attempts!");
+            Debug.LogError("No walkable nodes available on the grid!");
+            return null;
         }
 
-        return randomNode;
+        return walkableNodes[Random.Range(0, walkableNodes.Count)];
     }
 
 

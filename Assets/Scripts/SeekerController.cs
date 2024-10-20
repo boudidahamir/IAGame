@@ -62,8 +62,6 @@ public class SeekerController : MonoBehaviour
     {
         if (CanSeePlayer())
         {
-            pathFinding.findPath(transform.position, player.position);
-            lastKnownPosition = player.position;
             timeSinceLastSeen = 0;
         }
         else
@@ -72,24 +70,69 @@ public class SeekerController : MonoBehaviour
 
             if (timeSinceLastSeen >= chaseDuration)
             {
+                lastKnownPosition = player.position;
                 currentState = SeekerState.Searching;
             }
         }
+        pathFinding.findPath(transform.position, player.position);
         MoveAlongPath();
     }
 
     void SearchLastKnownPosition()
     {
-        pathFinding.findPath(transform.position, lastKnownPosition);
-        MoveAlongPath();
+        Node lastKnownNode = pathFinding.grid.NodeFromWorldPoint(lastKnownPosition);
 
-        if (Vector3.Distance(transform.position, lastKnownPosition) < 1.0f)
+        if (lastKnownNode != null && lastKnownNode.walkable)
         {
+            pathFinding.findPath(transform.position, lastKnownPosition);
+            MoveAlongPath();
+        }
+        else
+        {
+            Vector3 nearestWalkablePosition = FindNearestWalkablePosition(lastKnownPosition);
+
+            if (nearestWalkablePosition != Vector3.zero)
+            {
+                pathFinding.findPath(transform.position, nearestWalkablePosition);
+                MoveAlongPath();
+            }
+            else
+            {
+                // Fallback to patrolling when no valid path exists
+                currentState = SeekerState.Patrolling;
+                PatrolToRandomPosition();
+            }
+        }
+
+        if (pathFinding.grid.path == null || pathFinding.grid.path.Count == 0)
+        {
+            // If there’s no valid path left, switch back to patrolling
             currentState = SeekerState.Patrolling;
             PatrolToRandomPosition();
         }
-
     }
+
+
+    Vector3 FindNearestWalkablePosition(Vector3 targetPosition)
+    {
+        Node targetNode = pathFinding.grid.NodeFromWorldPoint(targetPosition);
+
+        if (targetNode.walkable)
+        {
+            return targetNode.worldPosition;
+        }
+
+        // Search surrounding nodes for a walkable one
+        List<Node> nearbyWalkableNodes = pathFinding.grid.GetNeighbours(targetNode);
+        if (nearbyWalkableNodes != null && nearbyWalkableNodes.Count > 0)
+        {
+            return nearbyWalkableNodes[0].worldPosition; // Choose the closest or first available walkable node
+        }
+
+        // No walkable nodes found
+        return Vector3.zero;
+    }
+
 
     bool CanSeePlayer()
     {
@@ -119,10 +162,28 @@ public class SeekerController : MonoBehaviour
 
             if (Vector3.Distance(transform.position, nextStep) < 0.5f)
             {
+                // Remove the current node from the path after reaching it
                 pathFinding.grid.path.RemoveAt(0);
             }
+
+            // Check if path is empty, switch to patrolling
+            if (pathFinding.grid.path.Count == 0)
+            {
+                if (currentState == SeekerState.Searching)
+                {
+                    currentState = SeekerState.Patrolling;
+                    PatrolToRandomPosition();
+                }
+            }
+        }
+        else if (currentState == SeekerState.Searching)
+        {
+            // No path found or valid, return to patrolling
+            currentState = SeekerState.Patrolling;
+            PatrolToRandomPosition();
         }
     }
+
 
     Vector3 GetRandomGridPosition()
     {
