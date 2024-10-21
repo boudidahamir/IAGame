@@ -5,17 +5,11 @@ using UnityEngine;
 public class PathFinding : MonoBehaviour
 {
     public Grid grid;
-    public Transform seeker, target;
 
     private void Awake()
     {
         grid = GameObject.Find("Grid").GetComponent<Grid>();
     }
-
-/*    private void Update()
-    {
-        findPath(seeker.position, target.position);
-    }*/
 
     public void findPath(Vector3 startPos, Vector3 targetPos)
     {
