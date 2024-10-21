@@ -160,5 +160,14 @@ public class Grid : MonoBehaviour
         return walkableNodes[Random.Range(0, walkableNodes.Count)];
     }
 
+    public List<Node> GetAllNodes()
+    {
+        List<Node> allNodes = new List<Node>();
+        foreach (Node node in grid)
+        {
+            allNodes.Add(node);
+        }
+        return allNodes;
+    }
 
 }

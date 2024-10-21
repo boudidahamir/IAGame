@@ -30,8 +30,11 @@ public class PlayerController : MonoBehaviour
     // Zoom
     private float mouseScrollY;
     public CinemachineFreeLook cineFreeLook;
-/*    private float[] InitialOrbits;
-*/
+
+    GameManager gameManager;
+
+    /*    private float[] InitialOrbits;
+    */
     private void Awake()
     {
         mvmspeed = mvmspeedControl;
@@ -39,6 +42,8 @@ public class PlayerController : MonoBehaviour
         input = new CharacterControllerInputSystem();
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
+        gameManager = GameObject.FindObjectOfType<GameManager>().GetComponent<GameManager>();
+
         /*InitialOrbits = new float[3];
         for (int i = 0; i < InitialOrbits.Length; i++)
         {
@@ -219,6 +224,8 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        if (!gameManager.startGame)
+            return;
         JumpDecend();
         MovePlayer();
 /*        ZoomInOut();

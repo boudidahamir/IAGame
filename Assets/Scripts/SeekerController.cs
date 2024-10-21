@@ -13,15 +13,20 @@ public class SeekerController : MonoBehaviour
     private PathFinding pathFinding;
     private Vector3 lastKnownPosition;
     private float timeSinceLastSeen = 0;
+    GameManager gameManager;
 
     void Start()
     {
+        gameManager = GameObject.FindObjectOfType<GameManager>().GetComponent<GameManager>();
         pathFinding = GetComponent<PathFinding>();
         PatrolToRandomPosition();
     }
 
     void Update()
     {
+        if (!gameManager.startGame)
+            return;
+
         switch (currentState)
         {
             case SeekerState.Patrolling:
@@ -98,7 +103,6 @@ public class SeekerController : MonoBehaviour
             }
             else
             {
-                // Fallback to patrolling when no valid path exists
                 currentState = SeekerState.Patrolling;
                 PatrolToRandomPosition();
             }
@@ -106,7 +110,6 @@ public class SeekerController : MonoBehaviour
 
         if (pathFinding.grid.path == null || pathFinding.grid.path.Count == 0)
         {
-            // If there’s no valid path left, switch back to patrolling
             currentState = SeekerState.Patrolling;
             PatrolToRandomPosition();
         }
@@ -122,14 +125,12 @@ public class SeekerController : MonoBehaviour
             return targetNode.worldPosition;
         }
 
-        // Search surrounding nodes for a walkable one
         List<Node> nearbyWalkableNodes = pathFinding.grid.GetNeighbours(targetNode);
         if (nearbyWalkableNodes != null && nearbyWalkableNodes.Count > 0)
         {
-            return nearbyWalkableNodes[0].worldPosition; // Choose the closest or first available walkable node
+            return nearbyWalkableNodes[0].worldPosition;
         }
 
-        // No walkable nodes found
         return Vector3.zero;
     }
 
@@ -162,11 +163,9 @@ public class SeekerController : MonoBehaviour
 
             if (Vector3.Distance(transform.position, nextStep) < 0.5f)
             {
-                // Remove the current node from the path after reaching it
                 pathFinding.grid.path.RemoveAt(0);
             }
 
-            // Check if path is empty, switch to patrolling
             if (pathFinding.grid.path.Count == 0)
             {
                 if (currentState == SeekerState.Searching)
@@ -178,7 +177,6 @@ public class SeekerController : MonoBehaviour
         }
         else if (currentState == SeekerState.Searching)
         {
-            // No path found or valid, return to patrolling
             currentState = SeekerState.Patrolling;
             PatrolToRandomPosition();
         }
@@ -187,7 +185,7 @@ public class SeekerController : MonoBehaviour
 
     Vector3 GetRandomGridPosition()
     {
-        for (int i = 0; i < 10; i++) // Limit attempts to prevent infinite loops
+        for (int i = 0; i < 10; i++)
         {
             Node randomNode = pathFinding.grid.GetRandomWalkableNode();
 
@@ -196,7 +194,7 @@ public class SeekerController : MonoBehaviour
                 return randomNode.worldPosition;
             }
         }
-        return transform.position; // Fallback position
+        return transform.position;
     }
 
 
