@@ -24,8 +24,11 @@ public class SeekerController : MonoBehaviour
 
     void Update()
     {
-        if (!gameManager.startGame)
-            return;
+        if (gameManager.gameType == GameType.PlayerHide)
+        {
+            if (!gameManager.startGame)
+                return;
+        }
 
         switch (currentState)
         {

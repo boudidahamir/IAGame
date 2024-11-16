@@ -18,7 +18,7 @@ public class AdhocSeeker : MonoBehaviour
     public Vector3 lastKnownPlayerPosition;
     private float confusedTime;
     public StateAdhoc currentState;
-
+    GameManager gameManager;
     public enum StateAdhoc
     {
         Searching,
@@ -28,12 +28,19 @@ public class AdhocSeeker : MonoBehaviour
 
     void Start()
     {
+        gameManager = GameObject.FindObjectOfType<GameManager>().GetComponent<GameManager>();
         SetRandomSearchPosition();
         currentState = StateAdhoc.Searching;
     }
 
     void Update()
     {
+        if (gameManager.gameType == GameType.PlayerHide)
+        {
+            if (!gameManager.startGame)
+                return;
+        }
+
         switch (currentState)
         {
             case StateAdhoc.Searching:

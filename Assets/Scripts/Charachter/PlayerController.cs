@@ -24,8 +24,8 @@ public class PlayerController : MonoBehaviour
     private bool isGrounded;
     private float jumpForce = 5f;
     public Transform groundCheck;
-    private Vector3 boxCastSize = new Vector3(0.5f, -0.1f, 0.5f);
-    private float groundDistance = 0.9f;
+    private Vector3 boxCastSize = new Vector3(0.3f, -0.05f, 0.3f);
+    private float groundDistance = 0.1f;
 
     // Zoom
     private float mouseScrollY;
@@ -33,8 +33,6 @@ public class PlayerController : MonoBehaviour
 
     GameManager gameManager;
 
-    /*    private float[] InitialOrbits;
-    */
     private void Awake()
     {
         mvmspeed = mvmspeedControl;
@@ -43,12 +41,6 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
         gameManager = GameObject.FindObjectOfType<GameManager>().GetComponent<GameManager>();
-
-        /*InitialOrbits = new float[3];
-        for (int i = 0; i < InitialOrbits.Length; i++)
-        {
-            InitialOrbits[i] = cineFreeLook.m_Orbits[i].m_Radius;
-        }*/
     }
 
     #region Enable/Disable Controls
@@ -59,9 +51,6 @@ public class PlayerController : MonoBehaviour
         input.NMVM.Movement.performed += OnMovementPerformed;
         input.NMVM.Movement.canceled += OnMovementCanceled;
         input.NMVM.Jump.performed += OnJumpPerformed;
-/*        input.NMVM.ZoomInOut.performed += OnScrollMousePerformed;
-        input.NMVM.ZoomInOut.canceled += OnScrollMouseCanceled;
-        input.NMVM.ResetZoom.performed += OnZoomResetPerformed;*/
         input.NMVM.Sprint.performed += OnSprintPerformed;
         input.NMVM.Sprint.canceled += OnSprintCanceled;
     }
@@ -72,9 +61,6 @@ public class PlayerController : MonoBehaviour
         input.NMVM.Movement.performed -= OnMovementPerformed;
         input.NMVM.Movement.canceled -= OnMovementCanceled;
         input.NMVM.Jump.performed -= OnJumpPerformed;
-/*        input.NMVM.ZoomInOut.performed -= OnScrollMousePerformed;
-        input.NMVM.ZoomInOut.canceled -= OnScrollMouseCanceled;
-        input.NMVM.ResetZoom.performed -= OnZoomResetPerformed;*/
         input.NMVM.Sprint.performed -= OnSprintPerformed;
         input.NMVM.Sprint.canceled -= OnSprintCanceled;
     }
@@ -163,73 +149,17 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
-    /*#region Camera Zoom
-
-    private void OnScrollMousePerformed(InputAction.CallbackContext value)
-    {
-        if ((cineFreeLook.m_Orbits[0].m_Radius <= 15 && cineFreeLook.m_Orbits[1].m_Radius <= 21 && cineFreeLook.m_Orbits[2].m_Radius <= 15) ||
-            (cineFreeLook.m_Orbits[0].m_Radius >= 2 && cineFreeLook.m_Orbits[1].m_Radius >= 8 && cineFreeLook.m_Orbits[2].m_Radius >= 2))
-        {
-            mouseScrollY = -value.ReadValue<float>();
-        }
-    }
-
-    private void OnScrollMouseCanceled(InputAction.CallbackContext value)
-    {
-        mouseScrollY = 0;
-    }
-
-    private void OnZoomResetPerformed(InputAction.CallbackContext value)
-    {
-        for (int i = 0; i < InitialOrbits.Length; i++)
-        {
-            cineFreeLook.m_Orbits[i].m_Radius = InitialOrbits[i];
-        }
-    }
-
-    private void ZoomInOut()
-    {
-        if (mouseScrollY != 0)
-        {
-            float[] minRadius = new float[3];
-            float[] maxRadius = new float[3];
-            minRadius[0] = 2f;
-            maxRadius[0] = 15f;
-            minRadius[1] = 2f;
-            maxRadius[1] = 15f;
-            minRadius[2] = 2f;
-            maxRadius[2] = 15f;
-            float zoomSpeed = 5.0f;
-
-            bool anyRadiusOutOfRange = (cineFreeLook.m_Orbits[0].m_Radius >= minRadius[0]
-                                        && cineFreeLook.m_Orbits[1].m_Radius >= minRadius[1]
-                                        && cineFreeLook.m_Orbits[2].m_Radius >= minRadius[2]) &&
-
-                                        (cineFreeLook.m_Orbits[0].m_Radius <= maxRadius[0]
-                                        && cineFreeLook.m_Orbits[1].m_Radius <= maxRadius[1]
-                                        && cineFreeLook.m_Orbits[2].m_Radius <= maxRadius[2]);
-
-            if (anyRadiusOutOfRange)
-            {
-                for (int i = 0; i < InitialOrbits.Length; i++)
-                {
-                    float targetRadius = Mathf.Clamp(cineFreeLook.m_Orbits[i].m_Radius + mouseScrollY * Time.deltaTime * zoomSpeed, minRadius[i], maxRadius[i]);
-                    cineFreeLook.m_Orbits[i].m_Radius = Mathf.Lerp(cineFreeLook.m_Orbits[i].m_Radius, targetRadius, Time.deltaTime * zoomSpeed);
-                }
-            }
-        }
-    }
-
-    #endregion*/
-
     private void Update()
     {
-        if (!gameManager.startGame)
-            return;
+        if(gameManager.gameType == GameType.PlayerSeek)
+        {
+            if (!gameManager.startGame)
+                return;
+        }
+
         JumpDecend();
         MovePlayer();
-/*        ZoomInOut();
-*/    }
+    }
 
     private void OnDrawGizmos()
     {
