@@ -35,12 +35,11 @@ public class GameState
         {
             case State.Searching:
             case State.LostPlayer:
-                // Penalize being close to the same position; reward exploration
                 score -= Vector3.Distance(SeekerPosition, targetPosition) * 0.1f;
                 break;
 
             case State.Chasing:
-                score -= Vector3.Distance(SeekerPosition, targetPosition) * 10f; // Increase weight
+                score -= Vector3.Distance(SeekerPosition, targetPosition) * 10f;
                 break;
         }
 

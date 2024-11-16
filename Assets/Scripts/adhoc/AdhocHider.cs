@@ -108,13 +108,28 @@ public class AdhocHider : MonoBehaviour
             Vector3 avoidanceDirection = Vector3.Cross(hitNormal, Vector3.up).normalized;
             Vector3 targetAvoidancePosition = hit.point + avoidanceDirection;
 
+            targetAvoidancePosition = AdjustToGround(targetAvoidancePosition);
             transform.position = Vector3.MoveTowards(transform.position, targetAvoidancePosition, moveSpeed * Time.deltaTime);
         }
         else
         {
             Vector3 terrainTarget = GetTerrainPosition(targetPosition);
+
+            terrainTarget = AdjustToGround(terrainTarget);
             transform.position = Vector3.MoveTowards(transform.position, terrainTarget, moveSpeed * Time.deltaTime);
         }
+    }
+
+    Vector3 AdjustToGround(Vector3 position)
+    {
+        Ray groundRay = new Ray(new Vector3(position.x, position.y + 10f, position.z), Vector3.down);
+
+        if (Physics.Raycast(groundRay, out RaycastHit groundHit, 20f, groundLayer)) 
+        {
+            position.y = groundHit.point.y;
+        }
+
+        return position;
     }
 
     bool IsPlayerInView()

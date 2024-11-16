@@ -19,6 +19,8 @@ public class AdhocSeeker : MonoBehaviour
     private float confusedTime;
     public StateAdhoc currentState;
     GameManager gameManager;
+    public LayerMask groundLayer;
+
     public enum StateAdhoc
     {
         Searching,
@@ -125,29 +127,40 @@ public class AdhocSeeker : MonoBehaviour
 
     void MoveTowards(Vector3 targetPosition)
     {
-        // Check for obstacles before moving towards the target
         Vector3 direction = (targetPosition - transform.position).normalized;
 
-        // Raycast in the direction of the target
         RaycastHit hit;
         if (Physics.Raycast(transform.position, direction, out hit, obstacleAvoidanceDistance, obstacleLayer))
         {
-            // If an obstacle is detected, calculate a new direction
             Vector3 hitNormal = hit.normal;
 
-            // Calculate a new direction based on the hit normal and desired offset
-            Vector3 avoidanceDirection = Vector3.Cross(hitNormal, Vector3.up).normalized; // Calculate the right direction
-            Vector3 targetAvoidancePosition = hit.point + avoidanceDirection * 1f; // Move away from the obstacle
+            Vector3 avoidanceDirection = Vector3.Cross(hitNormal, Vector3.up).normalized; 
+            Vector3 targetAvoidancePosition = hit.point + avoidanceDirection * 1f; 
 
-            // Move towards the target avoidance position
+            targetAvoidancePosition = AdjustToGround(targetAvoidancePosition);
+
             transform.position = Vector3.MoveTowards(transform.position, targetAvoidancePosition, searchSpeed * Time.deltaTime);
         }
         else
         {
-            // Move normally towards the target position if no obstacles detected
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, searchSpeed * Time.deltaTime);
+            Vector3 adjustedTargetPosition = AdjustToGround(targetPosition);
+
+            transform.position = Vector3.MoveTowards(transform.position, adjustedTargetPosition, searchSpeed * Time.deltaTime);
         }
     }
+
+    Vector3 AdjustToGround(Vector3 position)
+    {
+        Ray groundRay = new Ray(new Vector3(position.x, position.y + 10f, position.z), Vector3.down);
+
+        if (Physics.Raycast(groundRay, out RaycastHit groundHit, 20f, groundLayer))
+        {
+            position.y = groundHit.point.y;
+        }
+
+        return position;
+    }
+
 
     bool IsPlayerInView()
     {
