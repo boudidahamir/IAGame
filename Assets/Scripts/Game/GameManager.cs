@@ -33,6 +33,8 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        Cursor.visible = false;
+
         if (SceneManager.GetActiveScene().name == "PlayerSeek")
             gameType = GameType.PlayerSeek;
         else

@@ -9,9 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: d8008f5ed5cd5834b8ee97f24681f207
   - enabled: 1
-    path: Assets/Scenes/PlayerSeek.unity
-    guid: 81911bd9465c7bb40aeb95b281ed8f91
-  - enabled: 1
-    path: Assets/Scenes/PlayerHide.unity
+    path: Assets/Scenes/playerHide.unity
     guid: 9c5ce55e2be85a348a577f2a44d3846d
+  - enabled: 1
+    path: Assets/Scenes/playerSeek.unity
+    guid: 81911bd9465c7bb40aeb95b281ed8f91
   m_configObjects: {}
