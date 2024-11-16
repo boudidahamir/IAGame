@@ -4198,7 +4198,7 @@ Transform:
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
   m_LocalRotation: {x: -0.19593246, y: -0.000000014612341, z: -0.0000000029196214, w: 0.98061746}
-  m_LocalPosition: {x: 41, y: 27, z: 52}
+  m_LocalPosition: {x: 41, y: 21.549, z: 52}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7089,7 +7089,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2728408474496641791, guid: 787d0af1a433698458e1dc0840e0bdf3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 27
+      value: 21.549
       objectReference: {fileID: 0}
     - target: {fileID: 2728408474496641791, guid: 787d0af1a433698458e1dc0840e0bdf3, type: 3}
       propertyPath: m_LocalPosition.z
@@ -7150,6 +7150,14 @@ PrefabInstance:
     - target: {fileID: 3357030696655384645, guid: 787d0af1a433698458e1dc0840e0bdf3, type: 3}
       propertyPath: m_Name
       value: Remy
+      objectReference: {fileID: 0}
+    - target: {fileID: 3457867122639391305, guid: 787d0af1a433698458e1dc0840e0bdf3, type: 3}
+      propertyPath: m_Size.y
+      value: 3.4968514
+      objectReference: {fileID: 0}
+    - target: {fileID: 3457867122639391305, guid: 787d0af1a433698458e1dc0840e0bdf3, type: 3}
+      propertyPath: m_Center.y
+      value: 0.8094681
       objectReference: {fileID: 0}
     - target: {fileID: 5139267019390214035, guid: 787d0af1a433698458e1dc0840e0bdf3, type: 3}
       propertyPath: m_LocalPosition.x

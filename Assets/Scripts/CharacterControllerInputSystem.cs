@@ -74,7 +74,7 @@ public partial class @CharacterControllerInputSystem: IInputActionCollection2, I
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Movement"",
+                    ""action"": ""Movement"",   
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
